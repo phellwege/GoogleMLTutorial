@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 import * as tf from '@tensorflow/tfjs';
-import {loadGraphModel} from '@tensorflow/tfjs-converter';
 import * as cocoSsd from "@tensorflow-models/coco-ssd";
 import Webcam from "react-webcam";
 
