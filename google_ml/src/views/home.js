@@ -6,8 +6,10 @@ import { Button, Card, Form, Alert} from 'react-bootstrap';
 export default (props) => {
 
     return (
-        <div>
-            
+        <div className="PageWrap">
+            <div className="Body">
+
+            </div>
         </div>
     )
 }
