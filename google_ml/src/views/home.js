@@ -1,14 +1,16 @@
-import React, {useState, useEffect, useRef} from 'react';
-import '../App.css';
-import { Button, Card, Form, Alert} from 'react-bootstrap';
-import AIModel from '../tensorflow/model'
+import React, {useState, useEffect, useRef, Suspense} from 'react';
+import './main.css';
+// import { Button, Card, Form, Alert} from 'react-bootstrap';
+import Model from '../tensorflow/model'
 
 export default (props) => {
 
     return (
         <div className="PageWrap">
-            <AIModel />
-            is this page loading?
+            <Suspense fallback={<div>Loading...</div>}>
+                <Model/>
+            </Suspense>
+            does this work?
         </div>
     )
 }
