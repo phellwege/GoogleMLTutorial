@@ -38,14 +38,14 @@ export default (props) => {
 
     return (
         <div>
-        <Webcam ref={webcamRef} screenshotFormat="image/jpeg" />
-        <div>
-            {predictions.map((prediction, index) => (
-            <div key={index}>
-                {prediction.class} - {prediction.score.toFixed(2)}
+            <Webcam ref={webcamRef} screenshotFormat="image/jpeg" />
+            <div>
+                {predictions.map((prediction, index) => (
+                <div key={index}>
+                    {prediction.class} - {prediction.score.toFixed(2)}
+                </div>
+                ))}
             </div>
-            ))}
-        </div>
         </div>
     );
 }

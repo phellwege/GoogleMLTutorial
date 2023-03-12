@@ -10,7 +10,6 @@ export default (props) => {
             <Suspense fallback={<div>Loading...</div>}>
                 <Model/>
             </Suspense>
-            does this work?
         </div>
     )
 }
