@@ -10,8 +10,8 @@ export default (props) => {
 
     useEffect(() => {
         async function loadModel() {
-        const loadedModel = await cocoSsd.load();
-        setModel(loadedModel);
+            const loadedModel = await cocoSsd.load();
+            setModel(loadedModel);
         }
 
         loadModel();
@@ -20,17 +20,21 @@ export default (props) => {
     const webcamRef = useRef(null);
 
     const capture = async () => {
-        if (model && webcamRef.current) {
-        const image = webcamRef.current.getScreenshot();
-        const tensor = tf.browser.fromPixels(image).expandDims();
-        const predictions = await model.detect(tensor);
-        setPredictions(predictions);
+        if (model && webcamRef.current && webcamRef.current.video.readyState === 4) {
+            const image = webcamRef.current.getScreenshot();
+            const img = new Image();
+            img.src = image;
+            await img.decode();
+            const tensor = tf.browser.fromPixels(img).expandDims().reshape([-1, 480, 640, 3]);
+            console.log(tensor);
+            const predictions = await model.detect(tensor);
+            setPredictions(predictions);
         }
     };
 
     useEffect(() => {
         const interval = setInterval(() => {
-        capture();
+            capture();
         }, 100);
 
         return () => clearInterval(interval);
@@ -41,12 +45,11 @@ export default (props) => {
             <Webcam ref={webcamRef} screenshotFormat="image/jpeg" />
             <div>
                 {predictions.map((prediction, index) => (
-                <div key={index}>
-                    {prediction.class} - {prediction.score.toFixed(2)}
-                </div>
+                    <div key={index}>
+                        {prediction.class} - {prediction.score.toFixed(2)}
+                    </div>
                 ))}
             </div>
         </div>
     );
 }
-
