@@ -1,40 +1,51 @@
 import React, { useEffect, useState, useRef } from "react";
-import * as tf from '@tensorflow/tfjs';
+import * as tf from "@tensorflow/tfjs";
 import * as cocoSsd from "@tensorflow-models/coco-ssd";
 import Webcam from "react-webcam";
 
-export default () => {
+export default (props) => {
+  const [model, setModel] = useState(null);
+  const [predictions, setPredictions] = useState([]);
 
-    const url = {
-        model: 'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.11.0/dist/tf.min.js',
-        };
-    
-        async function loadModel(url) {
-            try {
-            // For layered model
-            // const model = await tf.loadLayersModel(url.model);
-            // For graph model
-            // const model = await tf.loadGraphModel(url.model);
-            setModel(model);
-            console.log("Load model success")
-            }
-            catch (err) {
-            console.log(err);
-            }
-            }
-            //React Hook
-            const [model, setModel] = useState();
-            useEffect(()=>{
-            tf.ready().then(()=>{
-            loadModel(url)
-            });
-            },[])
-    
+  useEffect(() => {
+    async function loadModel() {
+      const loadedModel = await cocoSsd.load();
+      setModel(loadedModel);
+    }
 
-    return (
-        <>
-            <div>
-            </div>
-        </>
-    )
+    loadModel();
+  }, []);
+
+  const webcamRef = useRef(null);
+
+  const capture = async () => {
+    if (model && webcamRef.current) {
+      const image = webcamRef.current.getScreenshot();
+      const tensor = tf.browser.fromPixels(image).expandDims();
+      const predictions = await model.detect(tensor);
+      setPredictions(predictions);
+    }
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      capture();
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, [capture]);
+
+  return (
+    <div>
+      <Webcam ref={webcamRef} screenshotFormat="image/jpeg" />
+      <div>
+        {predictions.map((prediction, index) => (
+          <div key={index}>
+            {prediction.class} - {prediction.score.toFixed(2)}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
+
