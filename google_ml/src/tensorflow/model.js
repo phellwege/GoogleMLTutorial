@@ -11,16 +11,6 @@ export default () => {
 
     const children = [];
 
-    // function predictWebcam(){
-    //     model.detect(video).then(function(predictions)) {
-    //         for(let i=0; i<children.length; i++){
-    //             liveView.removeChild(children[i]);
-    //         }
-    //         children.splice(0)
-    //     }
-    // }
-
-
     useEffect(() => {
         async function loadModel() {
         const loadedModel = await cocoSsd.load();
@@ -84,18 +74,22 @@ export default () => {
     }, [predictions]);
 
     return (
-<div style={{ position: 'relative' }}>
-        <Webcam ref={webcamRef} screenshotFormat="image/jpeg" />
+      <div style={{ position: 'relative' }}>
+        <Webcam
+            ref={webcamRef}
+            screenshotFormat="image/jpeg"
+            style={{ position: 'absolute', visibility: 'hidden', height: 0, width: 0 }}
+        />
         <canvas
             ref={canvasRef}
             style={{
                 position: 'absolute',
-                bottom: 0,
-                right: 0,
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, 25%)',
                 border: '2px solid red',
-                display: 'block'
             }}
         />
-    </div>
+      </div>
     );
 };
