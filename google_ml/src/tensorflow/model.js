@@ -1,81 +1,77 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import * as cocoSsd from "@tensorflow-models/coco-ssd";
-import "@tensorflow/tfjs";
-import Webcam from "react-webcam";
+import React, { useRef, useState, useEffect } from 'react';
+import * as cocoSsd from '@tensorflow-models/coco-ssd';
+import * as tf from '@tensorflow/tfjs';
+import Webcam from 'react-webcam';
+import './model.css'; // Import CSS file
 
-const App = () => {
-  const [model, setModel] = useState(null);
-  const [predictions, setPredictions] = useState([]);
+const ObjectDetection = () => {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
+  tf.setBackend('webgl');
+  const [model, setModel] = useState(null);
+  const [objects, setObjects] = useState([]);
+
+  const loadModel = async () => {
+    const loadedModel = await cocoSsd.load();
+    setModel(loadedModel);
+  };
+
+  const detectObjects = async () => {
+    const video = webcamRef.current.video;
+    const prediction = await model.detect(video);
+    setObjects(prediction);
+  };
 
   useEffect(() => {
-    const loadModel = async () => {
-      const model = await cocoSsd.load();
-      setModel(model);
-    };
-
     loadModel();
   }, []);
 
-  const detect = useCallback(async () => {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    canvas.width = 640;
+    canvas.height = 480;
+    const context = canvas.getContext('2d');
+    const video = webcamRef.current.video;
+    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    objects.forEach(obj => {
+      const [x, y, width, height] = obj.bbox;
+      const videoWidth = video.videoWidth;
+      const videoHeight = video.videoHeight;
+      const canvasWidth = canvas.width;
+      const canvasHeight = canvas.height;
+      const scaleX = canvasWidth / videoWidth;
+      const scaleY = canvasHeight / videoHeight;
+      const offsetX = (canvasWidth - scaleX * videoWidth) / 2;
+      const offsetY = (canvasHeight - scaleY * videoHeight) / 2;
+      const drawX = (x * scaleX + offsetX);
+      const drawY = (y * scaleY + offsetY);
+      context.beginPath();
+      context.rect(drawX, drawY, width * scaleX, height * scaleY);
+      context.lineWidth = 2;
+      context.strokeStyle = 'red';
+      context.stroke();
+      context.font = "16px Arial";
+      context.fillStyle = 'red';
+      context.fillText(obj.class, drawX, drawY - 5);
+    });
+  }, [objects]);
+  
+
+  useEffect(() => {
     if (model && webcamRef.current) {
-      const video = webcamRef.current.video;
-      const videoWidth = webcamRef.current.video.videoWidth;
-      const videoHeight = webcamRef.current.video.videoHeight;
-      canvasRef.current.width = videoWidth;
-      canvasRef.current.height = videoHeight;
-      const img = new Image(videoWidth, videoHeight);
-      img.src = webcamRef.current.getScreenshot();
-      const tensor = cocoSsd.browser.fromPixels(img).reshape([1, videoHeight, videoWidth, 3]);
-      const predictions = await model.detect(tensor);
-      setPredictions(predictions);
+      setInterval(() => {
+        detectObjects();
+      }, 10);
     }
-  }, [model]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      detect();
-    }, 100);
-
-    return () => clearInterval(interval);
-  }, [detect]);
-
-  useEffect(() => {
-    const drawBoxes = () => {
-      const canvas = canvasRef.current;
-      const ctx = canvas.getContext("2d");
-
-      predictions.forEach((prediction) => {
-        const [x, y, width, height] = prediction.bbox;
-        ctx.beginPath();
-        ctx.rect(x, y, width, height);
-        ctx.strokeStyle = "#00ff00";
-        ctx.lineWidth = 2;
-        ctx.stroke();
-      });
-    };
-
-    drawBoxes();
-  }, [predictions]);
-
-  const videoConstraints = {
-    width: 640,
-    height: 360,
-    facingMode: "user"
-  };
+  }, [model, webcamRef]);
 
   return (
-    <>
-      <Webcam
-        audio={false}
-        ref={webcamRef}
-        screenshotFormat="image/jpeg"
-        videoConstraints={videoConstraints}
-      />
-      <canvas ref={canvasRef} width="640" height="360"></canvas>
-    </>
+    <div className="container">
+      <Webcam ref={webcamRef} className="webcam" />
+      <canvas ref={canvasRef} className="canvas" width={640} height={480} />
+    </div>
   );
 };
 
-export default App;
+export default ObjectDetection;
