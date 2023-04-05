@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import * as cocoSsd from '@tensorflow-models/coco-ssd';
 import * as tf from '@tensorflow/tfjs';
 import Webcam from 'react-webcam';
-import './model.css'; // Import CSS file
+import './model.css';
 
 const ObjectDetection = () => {
     const webcamRef = useRef(null);
@@ -57,7 +57,6 @@ const ObjectDetection = () => {
         });
     }, [objects]);
     
-
     useEffect(() => {
         if (model && webcamRef.current) {
         setInterval(() => {
