@@ -53,7 +53,7 @@ const ObjectDetection = () => {
         context.stroke();
         context.font = "16px Arial";
         context.fillStyle = 'red';
-        context.fillText(obj.class, drawX, drawY - 5);
+        context.fillText(`${obj.class} - ${Math.round(obj.score * 100)}%`, drawX, drawY - 5);
         });
     }, [objects]);
     
