@@ -1,16 +1,14 @@
 .container {
     position: relative;
-  }
-  
-  .webcam {
+}
+
+.webcam {
     position: absolute;
     top: 0;
     left: 0;
-  }
-  
-  .canvas {
+}
+.canvas {
     position: absolute;
     top: 0;
     left: 0;
-  }
-  
+}
