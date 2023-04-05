@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/GoogleMLTutorial/static/css/main.cbb8695c.css",
+    "main.js": "/GoogleMLTutorial/static/js/main.8fa86a2f.js",
+    "static/js/787.4beb6789.chunk.js": "/GoogleMLTutorial/static/js/787.4beb6789.chunk.js",
+    "index.html": "/GoogleMLTutorial/index.html",
+    "main.cbb8695c.css.map": "/GoogleMLTutorial/static/css/main.cbb8695c.css.map",
+    "main.8fa86a2f.js.map": "/GoogleMLTutorial/static/js/main.8fa86a2f.js.map",
+    "787.4beb6789.chunk.js.map": "/GoogleMLTutorial/static/js/787.4beb6789.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.cbb8695c.css",
+    "static/js/main.8fa86a2f.js"
+  ]
+}
