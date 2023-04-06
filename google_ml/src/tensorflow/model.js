@@ -67,6 +67,7 @@ const ObjectDetection = () => {
 
     return (
         <div className="container">
+            <h1>Webcam</h1>
         <Webcam ref={webcamRef} className="webcam" />
         <canvas ref={canvasRef} className="canvas" width={640} height={480} />
         </div>
