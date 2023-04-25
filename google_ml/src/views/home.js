@@ -1,5 +1,7 @@
 import React, {useState, useEffect, useRef, Suspense} from 'react';
 import './main.css';
+import { Link } from 'react-router-dom';
+
 // import { Button, Card, Form, Alert} from 'react-bootstrap';
 import Model from '../tensorflow/model'
 
@@ -7,9 +9,11 @@ export default (props) => {
 
     return (
         <div className="PageWrap">
-            <Suspense fallback={<div>Loading...</div>}>
-                <Model/>
-            </Suspense>
+            <div className="mainPageDiv">
+                <Link to='/Webcam'>Webcam</Link>
+                <br/>
+                <p>In order for this demo to work. You will need to allow access to your webcam, were the tensorflow model will then analyze the video in near real-time from the browser. This will use some local resources on your computer to identify objects.</p>
+            </div>
         </div>
     )
 }

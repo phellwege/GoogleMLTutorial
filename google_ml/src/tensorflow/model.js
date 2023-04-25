@@ -4,7 +4,8 @@ import * as tf from '@tensorflow/tfjs';
 import Webcam from 'react-webcam';
 import './model.css';
 
-const ObjectDetection = () => {
+
+export default () => {
     const webcamRef = useRef(null);
     const canvasRef = useRef(null);
     tf.setBackend('webgl');
@@ -66,12 +67,11 @@ const ObjectDetection = () => {
     }, [model, webcamRef]);
 
     return (
-        <div className="container">
-            <h1>Webcam</h1>
-        <Webcam ref={webcamRef} className="webcam" />
-        <canvas ref={canvasRef} className="canvas" width={640} height={480} />
+        <div>
+            <div className="container">
+                <Webcam ref={webcamRef} className="webcam" />
+                <canvas ref={canvasRef} className="canvas" width={640} height={480} />
+            </div>
         </div>
     );
 };
-
-export default ObjectDetection;
