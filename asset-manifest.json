@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/GoogleMLTutorial/static/css/main.1f6e1208.css",
-    "main.js": "/GoogleMLTutorial/static/js/main.8d1734f9.js",
+    "main.js": "/GoogleMLTutorial/static/js/main.cf07f062.js",
     "static/js/787.4beb6789.chunk.js": "/GoogleMLTutorial/static/js/787.4beb6789.chunk.js",
     "index.html": "/GoogleMLTutorial/index.html",
     "main.1f6e1208.css.map": "/GoogleMLTutorial/static/css/main.1f6e1208.css.map",
-    "main.8d1734f9.js.map": "/GoogleMLTutorial/static/js/main.8d1734f9.js.map",
+    "main.cf07f062.js.map": "/GoogleMLTutorial/static/js/main.cf07f062.js.map",
     "787.4beb6789.chunk.js.map": "/GoogleMLTutorial/static/js/787.4beb6789.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.1f6e1208.css",
-    "static/js/main.8d1734f9.js"
+    "static/js/main.cf07f062.js"
   ]
 }
